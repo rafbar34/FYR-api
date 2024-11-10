@@ -8,7 +8,7 @@ namespace FYR_api.Model
 {
     public class SurveyRequest
     {
-        public readonly string UserId;
+        public required string UserId { get; set; }
 
         public required object Answers { get; set; }
 

@@ -26,17 +26,18 @@ namespace FYR_api.Model
         public string Alias { get; set; }
     }
 
-    class UserSurveyModel : BaseModel
+    [Table("users_survey")]
+    class UsersSurveyModel : BaseModel
     {
         [PrimaryKey("id")]
         public int Id { get; set; }
 
-        [Column]
+        [Column("user_id")]
         public string UserId { get; set; }
 
-        [Column]
+        [Column("answers")]
         public object Answers { get; set; }
-        [Column]
+        [Column("isCompleted")]
         public bool IsCompleted { get; set; }
 
     }
