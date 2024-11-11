@@ -23,7 +23,7 @@ namespace FYR_api.Controllers
             var getExpection = new GetExceptionHandler();
             var supabaseClient = _connectDb.SupabaseClient;
 
-            var res = await getExpection.ExpectionHandler(async () =>
+            var res = await getExpection.ExpectionSessionHandler(async () =>
             {
                 var session = await supabaseClient.Auth.SignUp(request.Email, request.Password);
                 return session;
@@ -39,7 +39,7 @@ namespace FYR_api.Controllers
         {
             var getExpection = new GetExceptionHandler();
             var supabaseClient = _connectDb.SupabaseClient;
-            var res =  await getExpection.ExpectionHandler(async () =>
+            var res =  await getExpection.ExpectionSessionHandler(async () =>
                 {
                    var session =   await supabaseClient.Auth.SignIn(request.Email, request.Password);
                     return session;

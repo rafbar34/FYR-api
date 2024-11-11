@@ -10,7 +10,21 @@ namespace FYR_api.NewFolder
 {
     public class GetExceptionHandler : ControllerBase
     {
-        public async Task<ActionResult<Session>>ExpectionHandler (Func<Task<Session>> supabaseAction)
+        public async Task<ActionResult<Session>>ExpectionSessionHandler (Func<Task<Session>> supabaseAction)
+        {
+            try
+            {
+                var session = await supabaseAction();
+                return new OkObjectResult(session);
+            }
+            catch (Supabase.Gotrue.Exceptions.GotrueException ex)
+            {
+
+                return new BadRequestObjectResult(ex.Message);
+            }
+        }
+
+        public async Task<ActionResult> ExpectionHandler(Func<Task<object>> supabaseAction)
         {
             try
             {

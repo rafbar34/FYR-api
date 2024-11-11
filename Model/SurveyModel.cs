@@ -36,7 +36,7 @@ namespace FYR_api.Model
         public string UserId { get; set; }
 
         [Column("answers")]
-        public object Answers { get; set; }
+        public ParametersModel Answers { get; set; }
         [Column("isCompleted")]
         public bool IsCompleted { get; set; }
 
