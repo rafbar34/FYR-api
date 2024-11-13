@@ -35,10 +35,52 @@ namespace FYR_api.Model
         [Column("user_id")]
         public string UserId { get; set; }
 
-        [Column("answers")]
-        public ParametersModel Answers { get; set; }
+        [Column("age")]
+        public int Age { get; set; }
+
+        [Column("sex")]
+        public int Sex { get; set; }
+        [Column("name")]
+        public string Name { get; set; }
+
+        [Column("pal")]
+        public float Pal { get; set; }
+        [Column("average_sleep")]
+        public int Sleep { get; set; }
         [Column("isCompleted")]
         public bool IsCompleted { get; set; }
 
+    }
+
+    [Table("daily_survey")]
+    class DailySurveyModel : BaseModel
+    {
+        [PrimaryKey("id")]
+        public int Id { get; set; }
+
+        [Column("user_id")]
+        public string UserId { get; set; }
+
+        [Column("created_at")]
+        public DateTime created_at { get; set; }
+
+        [Column("hip")]
+        public float Hip { get; set; }
+
+        [Column("waist")]
+        public float Waist { get; set; }
+        [Column("height")]
+        public int Height { get; set; }
+        [Column("weight")]
+        public float Weight { get; set; }
+        [Column("awake")]
+        public DateTime Awake { get; set; }
+        [Column("last_meal")]
+        public DateTime Last_meal { get; set; }
+
+        [Column("sleep")]
+        public int Sleep { get; set; }
+        [Column("wellbeing")]
+        public int Wellbeing { get; set; }
     }
 }

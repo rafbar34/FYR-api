@@ -32,22 +32,22 @@ namespace FYR_api.Controllers
             var result = await getExpection.ExpectionHandler(async () =>
             {
 
-             var res =   await supabaseClient.From<UsersSurveyModel>().Where(x => x.UserId == id).Get();
-            var measurments = new HealthParameters();
+                var res = await supabaseClient.From<UsersSurveyModel>().Where(x => x.UserId == id).Get();
+                var daily_res = await supabaseClient.From<DailySurveyModel>().Where(x => x.UserId == id).Get();
+                var measurments = new HealthParameters();
+                var answers_survey = res.Model;
+                var answer_daily_survey = daily_res.Model;
 
-            var weight = res.Model.Answers.Weight;
-            var height = res.Model.Answers.Height;
+                var requiredFields = new[] { answer_daily_survey?.Weight, answer_daily_survey?.Height, answer_daily_survey?.Hip, answer_daily_survey?.Waist, answers_survey?.Pal, answers_survey?.Age, answers_survey?.Sex };
 
-            var hips = res.Model.Answers.Hip;
-            var waist = res.Model.Answers.Waist;
+                if (requiredFields.Any(field => field == null))
+                {
+                    return BadRequest("Brak niektórych danych");
+                }
 
-            var pal = res.Model.Answers.Pal;
-            var age = res.Model.Answers.Age;
-            var sex = res.Model.Answers.Sex;
-
-            var bmi = measurments.CalcBMI(weight, height);
-            var whr = measurments.CalcWhr(hips, waist);
-            var cpm = measurments.calcCPM(weight, height, pal, age, sex);
+            var bmi = measurments.CalcBMI(answer_daily_survey.Weight, answer_daily_survey.Height);
+            var whr = measurments.CalcWhr(answer_daily_survey.Hip, answer_daily_survey.Waist);
+            var cpm = measurments.calcCPM(answer_daily_survey.Weight, answer_daily_survey.Height, answers_survey.Pal, answers_survey.Age, answers_survey.Sex);
 
             var parameters = new { whr, bmi, cpm };
                 return parameters;
