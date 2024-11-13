@@ -33,7 +33,6 @@ namespace FYR_api.NewFolder
             }
             catch (Supabase.Gotrue.Exceptions.GotrueException ex)
             {
-
                 return new BadRequestObjectResult(ex.Message);
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FYR_api.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,22 @@ namespace FYR_api.Services
             if (weight < 0 || height < 0) { return 0; };
             float bmi = MathF.Round((weight / MathF.Pow(height/100, 2)),2);
             return bmi;
+        }
+
+        public float calcCPM(float weight, float height, float pal, int age, int sex)
+        {
+            float gender_val;
+            if((Sex)sex == Sex.Male)
+            {
+                gender_val = -161;
+            }
+            else
+            {
+                gender_val = 5;
+            }
+            var ppm = 10f * weight + 6.25f * height + gender_val;
+            var cpm = ppm * pal;
+            return cpm;
         }
     }   
 }

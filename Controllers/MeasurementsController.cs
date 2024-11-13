@@ -1,4 +1,5 @@
-﻿using FYR_api.Model;
+﻿using FYR_api.Enums;
+using FYR_api.Model;
 using FYR_api.NewFolder;
 using FYR_api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace FYR_api.Controllers
         }
 
         [HttpGet]
-        [Route("/measurements/bmi/{id}")]
+        [Route("/measurements/{id}")]
         public async Task<ActionResult> BMIController (string id)
         {
             var getExpection = new GetExceptionHandler();
@@ -31,22 +32,24 @@ namespace FYR_api.Controllers
             var result = await getExpection.ExpectionHandler(async () =>
             {
 
-              var res =   await supabaseClient.From<UsersSurveyModel>().Where(x => x.UserId == id).Get();
+             var res =   await supabaseClient.From<UsersSurveyModel>().Where(x => x.UserId == id).Get();
             var measurments = new HealthParameters();
-            if(res.Models.Count() == 0)
-                {
-                    return BadRequest("Bad request, table is empty");
-                }
+
             var weight = res.Model.Answers.Weight;
             var height = res.Model.Answers.Height;
 
             var hips = res.Model.Answers.Hip;
             var waist = res.Model.Answers.Waist;
 
+            var pal = res.Model.Answers.Pal;
+            var age = res.Model.Answers.Age;
+            var sex = res.Model.Answers.Sex;
+
             var bmi = measurments.CalcBMI(weight, height);
             var whr = measurments.CalcWhr(hips, waist);
+            var cpm = measurments.calcCPM(weight, height, pal, age, sex);
 
-            var parameters = new { whr, bmi };
+            var parameters = new { whr, bmi, cpm };
                 return parameters;
             }
             );
