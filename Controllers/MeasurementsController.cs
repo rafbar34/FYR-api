@@ -34,7 +34,7 @@ namespace FYR_api.Controllers
 
                 var res = await supabaseClient.From<UsersSurveyModel>().Where(x => x.UserId == id).Get();
                 var daily_res = await supabaseClient.From<DailySurveyModel>().Where(x => x.UserId == id).Get();
-                var measurments = new HealthParameters();
+                var measurment = new HealthParameters();
                 var answers_survey = res.Model;
                 var answer_daily_survey = daily_res.Model;
 
@@ -44,13 +44,13 @@ namespace FYR_api.Controllers
                 {
                     return BadRequest("Brak niektórych danych");
                 }
+                List<object> measurements = new List<object>();
 
-            var bmi = measurments.CalcBMI(answer_daily_survey.Weight, answer_daily_survey.Height);
-            var whr = measurments.CalcWhr(answer_daily_survey.Hip, answer_daily_survey.Waist);
-            var cpm = measurments.calcCPM(answer_daily_survey.Weight, answer_daily_survey.Height, answers_survey.Pal, answers_survey.Age, answers_survey.Sex);
+                measurements.Add(measurment.CalcBMI(answer_daily_survey.Weight, answer_daily_survey.Height));
+                measurements.Add(measurment.CalcWhr(answer_daily_survey.Hip, answer_daily_survey.Waist));
+                measurements.Add(measurment.CalcCPM(answer_daily_survey.Weight, answer_daily_survey.Height, answers_survey.Pal, answers_survey.Age, answers_survey.Sex));
 
-            var parameters = new { whr, bmi, cpm };
-                return parameters;
+                return measurements;
             }
             );
 
