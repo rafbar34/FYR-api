@@ -38,17 +38,19 @@ namespace FYR_api.Controllers
                 var answers_survey = res.Model;
                 var answer_daily_survey = daily_res.Model;
 
+                bool AreRequiredFieldsPresent(params object?[] fields) => fields.All(field => field != null);
+
                 var requiredFields = new[] { answer_daily_survey?.Weight, answer_daily_survey?.Height, answer_daily_survey?.Hip, answer_daily_survey?.Waist, answers_survey?.Pal, answers_survey?.Age, answers_survey?.Sex };
 
-                if (requiredFields.Any(field => field == null))
+                if (AreRequiredFieldsPresent(requiredFields))
                 {
                     return BadRequest("Brak niektórych danych");
                 }
-                List<object> measurements = new List<object>();
-
-                measurements.Add(measurment.CalcBMI(answer_daily_survey.Weight, answer_daily_survey.Height));
-                measurements.Add(measurment.CalcWhr(answer_daily_survey.Hip, answer_daily_survey.Waist));
-                measurements.Add(measurment.CalcCPM(answer_daily_survey.Weight, answer_daily_survey.Height, answers_survey.Pal, answers_survey.Age, answers_survey.Sex));
+                List<object> measurements = new List<object> {
+                measurment.CalcBMI(answer_daily_survey.Weight, answer_daily_survey.Height),
+                measurment.CalcWhr(answer_daily_survey.Hip, answer_daily_survey.Waist),
+                measurment.CalcCPM(answer_daily_survey.Weight, answer_daily_survey.Height, answers_survey.Pal, answers_survey.Age, answers_survey.Sex)
+                };
 
                 return measurements;
             }

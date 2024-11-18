@@ -72,10 +72,8 @@ namespace FYR_api.Controllers
         [Route("/user/daily_survey/{id}")]
         public async Task<ActionResult> DailySurvey(string id)
         {
-            if (id == null)
-            {
-                return BadRequest("Bad user ID");
-            }
+            if (id == null) return BadRequest("Bad user ID");
+            
             var supabaseClient = _connectDb.SupabaseClient;
             var result = await supabaseClient.From<DailySurveyModel>().Where(x => x.UserId == id).Get();
             var survey_data = result.Models;
