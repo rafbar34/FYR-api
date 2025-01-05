@@ -24,6 +24,14 @@ namespace FYR_api.Model
 
         [Column("alias")]
         public string Alias { get; set; }
+        [Column("type")]
+        public string Type { get; set; }
+        [Column("placeholder")]
+        public string Placeholder { get; set; }
+        [Column("min")]
+        public int? Min { get; set; }
+        [Column("max")]
+        public int? Max { get;set; }
     }
 
     [Table("users_survey")]
