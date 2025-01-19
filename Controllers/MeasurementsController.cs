@@ -2,6 +2,7 @@
 using FYR_api.Model;
 using FYR_api.NewFolder;
 using FYR_api.Services;
+using FYR_api.Services.Health_parameters;
 using Microsoft.AspNetCore.Mvc;
 using Supabase.Interfaces;
 using System;
@@ -34,10 +35,12 @@ namespace FYR_api.Controllers
 
                 var res = await supabaseClient.From<UsersSurveyModel>().Where(x => x.UserId == id).Get();
                 var daily_res = await supabaseClient.From<DailySurveyModel>().Where(x => x.UserId == id).Get();
-                var measurment = new HealthParameters();
+                var health_parameters = new HealthParameters();
                 var answers_survey = res.Model;
                 var answer_daily_survey = daily_res.Model;
 
+                double whr = health_parameters.Result_Whr(answer_daily_survey.Hip, answer_daily_survey.Waist);
+                double bmi = health_parameters.Result_Bmi(answer_daily_survey.Weight, answer_daily_survey.Height);
                 bool AreRequiredFieldsPresent(params object?[] fields) => fields.All(field => field != null);
 
                 var requiredFields = new[] { answer_daily_survey?.Weight, answer_daily_survey?.Height, answer_daily_survey?.Hip, answer_daily_survey?.Waist, answers_survey?.Pal, answers_survey?.Age, answers_survey?.Sex };
@@ -47,9 +50,9 @@ namespace FYR_api.Controllers
                     return BadRequest("Brak niektórych danych");
                 }
                 List<object> measurements = new List<object> {
-                measurment.CalcBMI(answer_daily_survey.Weight, answer_daily_survey.Height),
-                measurment.CalcWhr(answer_daily_survey.Hip, answer_daily_survey.Waist),
-                measurment.CalcCPM(answer_daily_survey.Weight, answer_daily_survey.Height, answers_survey.Pal, answers_survey.Age, answers_survey.Sex)
+                bmi,
+                whr,
+                //measurment.CalcCPM(answer_daily_survey.Weight, answer_daily_survey.Height, answers_survey.Pal, answers_survey.Age, answers_survey.Sex)
                 };
 
                 return measurements;

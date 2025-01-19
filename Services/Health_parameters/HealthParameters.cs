@@ -1,33 +1,34 @@
 ﻿using FYR_api.Enums;
+using FYR_api.Services.Bmi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FYR_api.Services
+namespace FYR_api.Services.Health_parameters
 {
     public class HealthParameters
     {
-        public object CalcWhr(float hips, float waist)
-        {
-            if(hips  < 0 || waist < 0) return 0;
 
-            var whr = MathF.Round(waist / hips, 2);
-            return new { whr };
+
+
+        public double Result_Whr(float hips, float waist)
+        {
+            Whr whr = new Whr(hips, waist);
+            return whr.ResultCalc();
         }
 
-        public object CalcBMI(float weight, float height)
+        public double Result_Bmi(float weight, float height)
         {
-            if (weight < 0 || height < 0) { return 0; };
-            float bmi = MathF.Round((weight / MathF.Pow(height / 100, 2)), 2);
-            return new { bmi };
+            BMI bmi = new BMI(weight, height);
+            return bmi.ResultCalc();
         }
 
         public object CalcCPM(float weight, float height, float pal, int age, int sex)
         {
             int gender_val;
-            if((Sex)sex == Sex.Male)
+            if ((Sex)sex == Sex.Male)
             {
                 gender_val = -161;
             }
@@ -39,5 +40,5 @@ namespace FYR_api.Services
             var cpm = ppm * pal;
             return new { cpm };
         }
-    }   
+    }
 }
