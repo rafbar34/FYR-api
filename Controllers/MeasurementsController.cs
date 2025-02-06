@@ -26,7 +26,7 @@ namespace FYR_api.Controllers
 
         [HttpGet]
         [Route("/measurements/{id}")]
-        public async Task<ActionResult> BMIController (string id)
+        public async Task<ActionResult> BMIController (Guid id)
         {
             var getExpection = new GetExceptionHandler();
             var supabaseClient = _connectDb.SupabaseClient;

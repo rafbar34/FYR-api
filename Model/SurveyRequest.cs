@@ -8,13 +8,13 @@ namespace FYR_api.Model
 {
     public class SurveyRequest
     {
-        public required string UserId { get; set; }
         public int Age { get; set; }
         public int Sex { get; set; }
         public float Pal { get; set; }
         public int AverageSleep { get; set; }
 
         public required bool IsCompleted { get; set; }
+        public string Name { get; set; }
     }
     public class SurveyDailyRequest
     {

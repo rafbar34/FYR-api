@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Supabase.Gotrue;
 using System.Net;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FYR_api.Controllers
 {
@@ -33,7 +34,7 @@ namespace FYR_api.Controllers
 
         [HttpGet]
         [Route("/survey/user/{id}")]
-        public async Task<ActionResult> GetUserSurvey(string id)
+        public async Task<ActionResult> GetUserSurvey(Guid id)
         {
             if (id == null)
             {
@@ -46,9 +47,40 @@ namespace FYR_api.Controllers
             return Ok(result.Model);
         }
 
+        [HttpPost]
+        [Route("/survey/user/{id}")]
+        public async Task<ActionResult> PostSurvey(Guid id, [FromBody] SurveyRequest request)
+        {
+            if (id == null)
+            {
+                return BadRequest("Bad user ID");
+            }
+            Guid newGuid = Guid.NewGuid();
+            var newData = new UsersSurveyModel
+            {
+                Id = newGuid,
+                UserId = id,
+                Age = request.Age,
+                Sex = request.Sex,
+                Name = request.Name,
+                Pal = request.Pal,
+                Sleep = request.AverageSleep,
+                IsCompleted = request.IsCompleted,
+            };
+            var supabaseClient = _connectDb.SupabaseClient;
+            var result = await supabaseClient.From<UsersSurveyModel>().Insert(newData);
+
+            if (result.Models == null || !result.Models.Any())
+            {
+                return BadRequest("Error post survey.");
+            }
+
+            return Ok(new { message = "Survey saved successfully", result });
+        }
+
         [HttpPatch]
         [Route("/survey/user/{id}")]
-        public async Task<ActionResult> UpdateSurvey(string id, [FromBody] SurveyRequest request)
+        public async Task<ActionResult> UpdateSurvey(Guid id, [FromBody] SurveyRequest request)
         {
             if (id == null)
             {
@@ -70,7 +102,7 @@ namespace FYR_api.Controllers
 
         [HttpGet]
         [Route("/user/daily_survey/{id}")]
-        public async Task<ActionResult> DailySurvey(string id)
+        public async Task<ActionResult> DailySurvey(Guid id)
         {
             if (id == null) return BadRequest("Bad user ID");
             

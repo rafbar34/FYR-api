@@ -38,16 +38,17 @@ namespace FYR_api.Model
     class UsersSurveyModel : BaseModel
     {
         [PrimaryKey("id")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Column("user_id")]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Column("age")]
         public int Age { get; set; }
 
         [Column("sex")]
         public int Sex { get; set; }
+
         [Column("name")]
         public string Name { get; set; }
 
@@ -55,7 +56,7 @@ namespace FYR_api.Model
         public float Pal { get; set; }
         [Column("average_sleep")]
         public int Sleep { get; set; }
-        [Column("isCompleted")]
+        [Column("is_completed")]
         public bool IsCompleted { get; set; }
 
     }
@@ -67,7 +68,7 @@ namespace FYR_api.Model
         public int Id { get; set; }
 
         [Column("user_id")]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Column("created_at")]
         public DateTime created_at { get; set; }
