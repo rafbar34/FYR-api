@@ -8,8 +8,6 @@ namespace FYR_api.Model
 {
     public abstract class Calculate_Parameters
     {
-
-
         public abstract double ResultCalc();
     };
 }

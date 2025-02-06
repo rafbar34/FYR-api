@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Supabase.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -41,6 +42,7 @@ namespace FYR_api.Controllers
 
                 double whr = health_parameters.Result_Whr(answer_daily_survey.Hip, answer_daily_survey.Waist);
                 double bmi = health_parameters.Result_Bmi(answer_daily_survey.Weight, answer_daily_survey.Height);
+                double cpm = health_parameters.Result_CPM(answer_daily_survey.Weight, answer_daily_survey.Height, answers_survey.Pal, answers_survey.Age, answers_survey.Sex);
                 bool AreRequiredFieldsPresent(params object?[] fields) => fields.All(field => field != null);
 
                 var requiredFields = new[] { answer_daily_survey?.Weight, answer_daily_survey?.Height, answer_daily_survey?.Hip, answer_daily_survey?.Waist, answers_survey?.Pal, answers_survey?.Age, answers_survey?.Sex };
@@ -52,7 +54,7 @@ namespace FYR_api.Controllers
                 List<object> measurements = new List<object> {
                 bmi,
                 whr,
-                //measurment.CalcCPM(answer_daily_survey.Weight, answer_daily_survey.Height, answers_survey.Pal, answers_survey.Age, answers_survey.Sex)
+                cpm
                 };
 
                 return measurements;

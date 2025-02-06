@@ -10,9 +10,6 @@ namespace FYR_api.Services.Health_parameters
 {
     public class HealthParameters
     {
-
-
-
         public double Result_Whr(float hips, float waist)
         {
             Whr whr = new Whr(hips, waist);
@@ -25,20 +22,13 @@ namespace FYR_api.Services.Health_parameters
             return bmi.ResultCalc();
         }
 
-        public object CalcCPM(float weight, float height, float pal, int age, int sex)
+        public double Result_CPM(float weight, float height, float pal, int age, int sex)
         {
-            int gender_val;
-            if ((Sex)sex == Sex.Male)
-            {
-                gender_val = -161;
-            }
-            else
-            {
-                gender_val = 5;
-            }
-            var ppm = 10f * weight + 6.25f * height + gender_val;
-            var cpm = ppm * pal;
-            return new { cpm };
+            CPM cpm = new CPM( weight, height,  pal,  age,  sex);
+           return cpm.ResultCalc();
+
         }
+
+   
     }
 }
